@@ -1,6 +1,7 @@
 NocashLauncher
 ==============
 
+**This tool is only intended for use with the debug version of No$gba. If you are not using the debug version of No$gba then you have no need for this, the issue that this tool fixes does not exist in the gaming version!**
 
 What
 ----
