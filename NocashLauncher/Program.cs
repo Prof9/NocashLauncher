@@ -23,7 +23,7 @@ namespace NocashLauncher {
 		public static extern bool WriteProcessMemory(int hProcess, int lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesWritten);
 
 		static string[] foldersToSearch = new string[] {
-			"NO$GBA", "NOCASH", "bin"
+			"NO$GBA", "NOCASH", "bin", "tools"
 		};
 
 		static int Main(string[] args) {

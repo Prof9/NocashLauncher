@@ -6,6 +6,7 @@ v1.2 - TBD
 * Increase delay between patching tries (should reduce patching fail rate).
 * Improve No$gba executable searching.
 * Fix drag-and-drop not working if NocashLauncher and the ROM file were in different directories.
+* Add 'tools' to search folders.
 
 
 v1.1 - 26 May 2016
