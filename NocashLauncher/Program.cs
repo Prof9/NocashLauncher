@@ -65,7 +65,7 @@ namespace NocashLauncher {
 
 			int tries = 20;
 			while (tries > 0) {
-				Thread.Sleep(10);
+				Thread.Sleep(50);
 
 				bool applied = false;
 
