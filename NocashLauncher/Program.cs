@@ -131,31 +131,32 @@ namespace NocashLauncher {
 		}
 
 		static Process CreateNocashProcess(string[] args) {
-			string argsFileName = GetArgsFileName(args);
-			string embeddedFileName = GetEmbeddedFileName();
-			string fileName = null;
+			string exeDirectory = AppDomain.CurrentDomain.BaseDirectory.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
+			string argsPath = GetArgsPath(args, exeDirectory);
+			string embeddedPath = GetEmbeddedPath(exeDirectory);
+			string path = null;
 			int argsIndex = 0;
 
-			if (fileName == null && argsFileName != null) {
-				if (File.Exists(argsFileName)) {
-					fileName = argsFileName;
+			if (path == null && argsPath != null) {
+				if (File.Exists(argsPath)) {
+					path = argsPath;
 					argsIndex = 1;
 				} else {
-					Console.WriteLine("Could not find " + argsFileName + ".");
+					Console.WriteLine("Could not find " + argsPath + ".");
 				}
 			}
-			if (fileName == null && embeddedFileName != null) {
-				if (File.Exists(embeddedFileName)) {
-					fileName = embeddedFileName;
+			if (path == null && embeddedPath != null) {
+				if (File.Exists(embeddedPath)) {
+					path = embeddedPath;
 				} else {
-					Console.WriteLine("Could not find " + embeddedFileName + ".");
+					Console.WriteLine("Could not find " + embeddedPath + ".");
 				}
 			}
-			if (fileName == null) {
-				fileName = SearchFolders("NO$GBA.EXE");
+			if (path == null) {
+				path = SearchFolders("NO$GBA.EXE", exeDirectory);
 			}
 
-			fileName = Path.GetFullPath(fileName);
+			path = Path.GetFullPath(path);
 
 			// Get No$gba args.
 			string nocashArgs = "";
@@ -168,43 +169,49 @@ namespace NocashLauncher {
 
 			// Create No$gba process.
 			Process nocash = new Process();
-			nocash.StartInfo.FileName = fileName;
+			nocash.StartInfo.FileName = path;
 			nocash.StartInfo.Arguments = nocashArgs;
-			nocash.StartInfo.WorkingDirectory = Path.GetDirectoryName(fileName);
+			nocash.StartInfo.WorkingDirectory = Path.GetDirectoryName(path);
 
 			return nocash;
 		}
 
-		static string SearchFolders(string fileName) {
+		static string SearchFolders(string fileName, string basePath) {
+			bool first = true;
+			string path;
 			foreach (string folder in foldersToSearch) {
-				string temp = AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + folder + Path.DirectorySeparatorChar + fileName;
-				if (fileName == null) {
-					try {
-						if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + folder + Path.DirectorySeparatorChar + "NO$GBA.EXE")) {
-							fileName = AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + folder + Path.DirectorySeparatorChar + "NO$GBA.EXE";
-						}
-					} catch { }
-				}
+				try {
+					if (first) {
+						path = basePath + fileName;
+					} else {
+						path = basePath + folder + Path.DirectorySeparatorChar + fileName;
+					}
+					first = false;
+
+					if (File.Exists(path)) {
+						return path;
+					}
+				} catch { }
 			}
 
-			return fileName;
+			return null;
 		}
 
-		static string GetArgsFileName(string[] args) {
+		static string GetArgsPath(string[] args, string basePath) {
 			if (args.Length <= 0) {
 				return null;
 			}
 
 			try {
 				if (Path.GetExtension(args[0]).ToLowerInvariant() == ".exe") {
-					return args[0];
+					return SearchFolders(args[0], basePath);
 				}
 			} catch { }
 
 			return null;
 		}
 
-		static string GetEmbeddedFileName() {
+		static string GetEmbeddedPath(string basePath) {
 			// Is the No$gba executable name embedded in the filename of the Nocash Launcher executable?
 			string filename = Path.GetFileName(AppDomain.CurrentDomain.FriendlyName).Trim();
 			Match regexMatch = Regex.Match(filename,
@@ -212,7 +219,7 @@ namespace NocashLauncher {
 				RegexOptions.CultureInvariant | RegexOptions.IgnoreCase
 			);
 			if (regexMatch.Success) {
-				return SearchFolders(regexMatch.Value + ".exe");
+				return SearchFolders(regexMatch.Value + ".exe", basePath);
 			} else {
 				return null;
 			}
