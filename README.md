@@ -22,7 +22,7 @@ NocashLauncher currently supports the following versions of the No$gba Windows d
 ```
 v2.6a
 v2.7c - v2.7d
-v2.8 - v2.8d
+v2.8 - v2.8e
 ```
 
 
