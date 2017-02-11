@@ -1,6 +1,6 @@
 Changelog
 ---------
-v1.2 - TBD
+v1.2 - 11 February 2017
 
 * Support No$gba debugger v2.8e.
 * Increase delay between patching tries (should reduce patching fail rate).
