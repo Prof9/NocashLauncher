@@ -45,6 +45,15 @@ namespace NocashLauncher {
 			return true;
 		}
 
+		public static bool PatchDebug28f(int handle) {
+			if (!PatchFontChangeMessage(handle, 0x49553E, 0x4955CE, new int[] { 0x4025A0, 0x4025C3 })) {
+				return false;
+			}
+
+			Console.WriteLine("Applied patch: No$gba v2.8f debug version");
+			return true;
+		}
+
 		public static bool PatchDebug28e(int handle) {
 			if (!PatchFontChangeMessage(handle, 0x495026, 0x495056, new int[] { 0x40256F, 0x402592 })) {
 				return false;

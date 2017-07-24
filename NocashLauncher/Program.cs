@@ -27,7 +27,7 @@ namespace NocashLauncher {
 		};
 
 		static int Main(string[] args) {
-			Console.WriteLine("NocashLauncher v1.2 by Prof. 9");
+			Console.WriteLine("NocashLauncher v1.3 by Prof. 9");
 			Console.WriteLine();
 
 #if DEBUG
@@ -69,6 +69,7 @@ namespace NocashLauncher {
 
 				bool applied = false;
 
+				applied |= Patches.PatchDebug28f(handle);
 				applied |= Patches.PatchDebug28e(handle);
 				applied |= Patches.PatchDebug28d(handle);
 				applied |= Patches.PatchDebug28c(handle);

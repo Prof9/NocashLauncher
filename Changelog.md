@@ -1,5 +1,10 @@
 Changelog
 ---------
+v1.3 - 24 July 2017
+
+* Support No$gba debugger v2.8f.
+
+
 v1.2 - 11 February 2017
 
 * Support No$gba debugger v2.8e.
